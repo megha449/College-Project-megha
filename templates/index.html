@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Canteen Menu</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; display: flex; gap: 20px; }
+        .main-content { flex: 3; }
+        .sidebar { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); height: fit-content; position: sticky; top: 20px; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h1, h2 { margin-top: 0; color: #333; }
+        
+        .admin-btn { background: #333; color: #fff; text-decoration: none; padding: 10px 15px; border-radius: 5px; font-weight: bold; }
+        .admin-btn:hover { background: #555; }
+        
+        .menu-container { display: flex; flex-wrap: wrap; gap: 15px; }
+        .menu-item { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: calc(33% - 15px); text-align: center; box-sizing: border-box; }
+        .price { color: green; font-weight: bold; font-size: 1.2em; }
+        button { background: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #218838; }
+        
+        /* Cart & Order Styles */
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+        .total-box { font-size: 1.2em; font-weight: bold; margin-top: 15px; padding-top: 15px; border-top: 2px solid #333; }
+        .payment-section { margin-top: 20px; display: none; }
+        select, input { width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 15px; box-sizing: border-box;}
+        .place-order-btn { width: 100%; background: #007bff; font-size: 1.1em; padding: 12px; margin-top: 10px; }
+        .place-order-btn:hover { background: #0056b3; }
+        
+        /* Tracker Styles */
+        .order-tracker { display: none; text-align: center; background: #e9ecef; padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .status-badge { display: inline-block; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 1.2em; background: #ffc107; color: #333; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>🍔 Campus Canteen</h1>
+            <div>
+                <a href="{{ url_for('admin_login') }}" class="admin-btn">⚙️ Admin Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="admin-btn" style="background:#d9534f; margin-left:10px;">Logout</a>
+            </div>
+        </div>
+
+        <h2>Our Menu</h2>
+        <div class="menu-container" id="menu">
+            </div>
+    </div>
+
+    <div class="sidebar">
+        <div id="cart-section">
+            <h2>🛒 Your Cart</h2>
+            <div id="cart-items">
+                <p style="color: #777;">Your cart is empty.</p>
+            </div>
+            <div class="total-box">
+                Total: ₹<span id="cart-total">0</span>
+            </div>
+            <button id="checkout-btn" class="place-order-btn" style="display:none;" onclick="showPayment()">Proceed to Payment</button>
+        </div>
+
+        <div id="payment-section" class="payment-section">
+            <h2>💳 Payment Details</h2>
+            <label>Payment Method:</label>
+            <select id="payment-method">
+                <option value="UPI">UPI (GPay / PhonePe)</option>
+                <option value="Card">Credit / Debit Card</option>
+                <option value="Cash">Cash at Counter</option>
+            </select>
+            <label>Student ID (Optional):</label>
+            <input type="text" id="student-id" placeholder="Enter ID for reference">
+            <button class="place-order-btn" onclick="placeOrder()">Confirm & Pay ₹<span id="pay-total">0</span></button>
+            <button style="background:#ccc; color:#333; width:100%; margin-top:10px;" onclick="cancelPayment()">Cancel</button>
+        </div>
+
+        <div id="order-tracker" class="order-tracker">
+            <h2>🧾 Order Placed!</h2>
+            <p>Order ID: <strong>#<span id="display-order-id"></span></strong></p>
+            <p>Current Status:</p>
+            <div class="status-badge" id="live-status">Preparing in Kitchen 🍳</div>
+            <p style="font-size: 0.9em; color: #666; margin-top: 15px;">Live tracking... this updates automatically.</p>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        let orderPollingInterval = null;
+
+        // 1. Fetch and Display Menu
+        fetch('/api/menu')
+            .then(response => response.json())
+            .then(data => {
+                const menuDiv = document.getElementById('menu');
+                data.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'menu-item';
+                    // Pass the item object as a JSON string to the onclick function
+                    div.innerHTML = `
+                        <h3>${item.name}</h3>
+                        <p style="color: #666; font-size: 0.9em;">${item.category}</p>
+                        <p class="price">₹${item.price}</p>
+                        <button onclick='addToCart(${JSON.stringify(item)})'>Add to Cart</button>
+                    `;
+                    menuDiv.appendChild(div);
+                });
+            });
+
+        // 2. Cart Logic
+        function addToCart(item) {
+            cart.push(item);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartItemsDiv = document.getElementById('cart-items');
+            const cartTotalSpan = document.getElementById('cart-total');
+            const payTotalSpan = document.getElementById('pay-total');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            
+            cartItemsDiv.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<p style="color: #777;">Your cart is empty.</p>';
+                checkoutBtn.style.display = 'none';
+            } else {
+                checkoutBtn.style.display = 'block';
+                cart.forEach((item, index) => {
+                    total += item.price;
+                    cartItemsDiv.innerHTML += `
+                        <div class="cart-item">
+                            <span>${item.name}</span>
+                            <span>₹${item.price} <button style="padding: 2px 6px; background: #dc3545; font-size: 0.8em; margin-left: 10px;" onclick="removeFromCart(${index})">X</button></span>
+                        </div>
+                    `;
+                });
+            }
+            cartTotalSpan.innerText = total;
+            payTotalSpan.innerText = total;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        // 3. Payment UI Logic
+        function showPayment() {
+            document.getElementById('cart-section').style.display = 'none';
+            document.getElementById('payment-section').style.display = 'block';
+        }
+
+        function cancelPayment() {
+            document.getElementById('payment-section').style.display = 'none';
+            document.getElementById('cart-section').style.display = 'block';
+        }
+
+        // 4. Place Order Logic
+        function placeOrder() {
+            const total = parseInt(document.getElementById('cart-total').innerText);
+            const paymentMethod = document.getElementById('payment-method').value;
+
+            // Prepare data for the backend API
+            const orderData = {
+                cart: cart,
+                total: total,
+                payment_method: paymentMethod // Backend ignores this currently, but good for future
+            };
+
+            fetch('/api/place_order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Switch UI to Tracker
+                document.getElementById('payment-section').style.display = 'none';
+                document.getElementById('order-tracker').style.display = 'block';
+                
+                // Set initial status
+                document.getElementById('display-order-id').innerText = data.order_id;
+                document.getElementById('live-status').innerText = data.status;
+
+                // Clear Cart
+                cart = [];
+                updateCartUI();
+
+                // Start tracking
+                startOrderTracking(data.order_id);
+            });
+        }
+
+        // 5. Live Order Tracking
+        function startOrderTracking(orderId) {
+            // Check status every 3 seconds
+            orderPollingInterval = setInterval(() => {
+                fetch('/api/order_status/' + orderId)
+                    .then(response => response.json())
+                    .then(data => {
+                        const statusBadge = document.getElementById('live-status');
+                        statusBadge.innerText = data.status;
+
+                        // Change colors based on status
+                        if (data.status.includes('Completed') || data.status.includes('✅')) {
+                            statusBadge.style.background = '#28a745'; // Green
+                            statusBadge.style.color = 'white';
+                            clearInterval(orderPollingInterval); // Stop tracking once done
+                        } else if (data.status.includes('Ready')) {
+                            statusBadge.style.background = '#17a2b8'; // Blue
+                            statusBadge.style.color = 'white';
+                        }
+                    });
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

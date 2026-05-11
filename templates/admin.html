@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Admin Dashboard</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #e9ecef; 
+            margin: 0; 
+            padding: 20px; 
+        }
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: #2c3e50; 
+            color: white;
+            padding: 15px 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            margin-bottom: 20px; 
+        }
+        h1 { margin: 0; font-size: 24px; }
+        .logout-btn { 
+            background: #e74c3c; 
+            color: white; 
+            text-decoration: none; 
+            padding: 10px 15px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+        }
+        .logout-btn:hover { background: #c0392b; }
+        
+        .orders-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 20px; 
+        }
+        .order-card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            border-top: 5px solid #f39c12; 
+        }
+        .order-card.ready { border-top-color: #3498db; }
+        
+        .order-header { 
+            display: flex; 
+            justify-content: space-between; 
+            border-bottom: 1px solid #eee; 
+            padding-bottom: 10px; 
+            margin-bottom: 10px; 
+        }
+        .order-id { font-size: 1.2em; font-weight: bold; color: #333; }
+        .order-total { font-weight: bold; color: #27ae60; }
+        
+        .item-list { margin: 0; padding-left: 20px; color: #555; }
+        .item-list li { margin-bottom: 5px; }
+        
+        .status-badge { 
+            display: inline-block; 
+            padding: 5px 10px; 
+            border-radius: 15px; 
+            font-size: 0.9em; 
+            font-weight: bold; 
+            background: #f1f3f5; 
+            margin: 15px 0; 
+        }
+        
+        .action-buttons { display: flex; gap: 10px; }
+        button { 
+            flex: 1; 
+            padding: 10px; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            color: white; 
+            transition: background 0.2s;
+        }
+        .btn-ready { background: #3498db; }
+        .btn-ready:hover { background: #2980b9; }
+        .btn-complete { background: #2ecc71; }
+        .btn-complete:hover { background: #27ae60; }
+
+        .no-orders {
+            text-align: center;
+            font-size: 1.2em;
+            color: #777;
+            grid-column: 1 / -1;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>👨‍🍳 Kitchen Dashboard - Live Orders</h1>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout / Switch to Student</a>
+    </div>
+
+    <div class="orders-grid" id="orders-container">
+        </div>
+
+    <script>
+        function fetchOrders() {
+            fetch('/api/all_orders')
+                .then(response => response.json())
+                .then(data => {
+                    renderOrders(data);
+                })
+                .catch(err => console.error("Error fetching orders:", err));
+        }
+
+        function renderOrders(orders) {
+            const container = document.getElementById('orders-container');
+            container.innerHTML = ''; 
+
+            if (orders.length === 0) {
+                container.innerHTML = '<div class="no-orders">No active orders right now. Time for a break! ☕</div>';
+                return;
+            }
+
+            orders.forEach(order => {
+                let itemsHtml = '<ul class="item-list">';
+                order.items.forEach(item => {
+                    itemsHtml += `<li>${item.name}</li>`;
+                });
+                itemsHtml += '</ul>';
+
+                let cardClass = 'order-card';
+                if (order.status.includes('Ready')) {
+                    cardClass += ' ready';
+                }
+
+                const card = document.createElement('div');
+                card.className = cardClass;
+                card.innerHTML = `
+                    <div class="order-header">
+                        <span class="order-id">Order #${order.id}</span>
+                        <span class="order-total">₹${order.total}</span>
+                    </div>
+                    ${itemsHtml}
+                    <div class="status-badge">${order.status}</div>
+                    
+                    <div class="action-buttons">
+                        ${order.status !== 'Ready for Pickup 🛍️' 
+                            ? `<button class="btn-ready" onclick="updateOrderStatus(${order.id}, 'Ready for Pickup 🛍️')">Mark Ready</button>` 
+                            : ''}
+                        <button class="btn-complete" onclick="updateOrderStatus(${order.id}, 'Completed ✅')">Complete & Clear</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateOrderStatus(orderId, newStatus) {
+            fetch('/api/update_order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ order_id: orderId, status: newStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fetchOrders(); 
+                }
+            });
+        }
+
+        // Auto-refresh orders every 5 seconds
+        setInterval(fetchOrders, 5000);
+        
+        fetchOrders();
+    </script>
+
+</body>
+</html>
