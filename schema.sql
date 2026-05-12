@@ -7,7 +7,8 @@ DROP TABLE IF EXISTS orders;
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE,
-    password TEXT
+    password TEXT,
+    role TEXT
 );
 
 -- 3. Create the Menu table
@@ -27,7 +28,12 @@ CREATE TABLE orders (
 );
 
 -- 5. Insert the default student login
-INSERT INTO users (username, password) VALUES ('student', 'campus123');
+INSERT INTO users (username, password, role) 
+VALUES ('student', 'campus123', 'student');
+
+-- 5.1 Insert the admin login
+INSERT INTO users (username, password, role) 
+VALUES ('admin', 'admin123', 'admin');
 
 -- 6. Insert the 38 Campus Canteen Menu Items
 INSERT INTO menu (name, category, price) VALUES 
