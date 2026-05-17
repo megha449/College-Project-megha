@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Campus Canteen - Login</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0"/>
+
+    <title>
+        Campus Canteen - Login
+    </title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
 
     <style>
 
@@ -20,553 +28,558 @@
         }
 
         body{
+
             font-family:'Poppins',sans-serif;
+
             overflow-x:hidden;
+
             background:
-            linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
+            linear-gradient(
+                rgba(0,0,0,0.6),
+                rgba(0,0,0,0.6)
+            ),
             url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop')
             no-repeat center center/cover;
+
             background-attachment:fixed;
+
             color:white;
+
             position:relative;
         }
 
-        /* ANIMATED BACKGROUND */
-
         body::before{
+
             content:'';
+
             position:fixed;
+
             width:500px;
             height:500px;
+
             background:rgba(255,77,41,0.15);
+
             border-radius:50%;
+
             top:-150px;
             left:-150px;
+
             animation:float1 8s infinite ease-in-out;
+
             z-index:-1;
         }
 
         body::after{
+
             content:'';
+
             position:fixed;
+
             width:450px;
             height:450px;
+
             background:rgba(255,255,255,0.08);
+
             border-radius:50%;
+
             bottom:-150px;
             right:-100px;
+
             animation:float2 10s infinite ease-in-out;
+
             z-index:-1;
         }
 
         @keyframes float1{
-            0%{transform:translateY(0px);}
-            50%{transform:translateY(40px);}
-            100%{transform:translateY(0px);}
+
+            0%{
+                transform:translateY(0px);
+            }
+
+            50%{
+                transform:translateY(40px);
+            }
+
+            100%{
+                transform:translateY(0px);
+            }
+
         }
 
         @keyframes float2{
-            0%{transform:translateY(0px);}
-            50%{transform:translateY(-40px);}
-            100%{transform:translateY(0px);}
+
+            0%{
+                transform:translateY(0px);
+            }
+
+            50%{
+                transform:translateY(-40px);
+            }
+
+            100%{
+                transform:translateY(0px);
+            }
+
         }
 
-        /* HEADER */
-
         header{
+
             width:100%;
+
             padding:18px 40px;
+
             position:fixed;
+
             top:0;
             left:0;
+
             z-index:1000;
+
             background:rgba(0,0,0,0.35);
+
             backdrop-filter:blur(12px);
+
             display:flex;
+
             justify-content:space-between;
+
             align-items:center;
-            transition:0.4s;
         }
 
         .logo{
-            font-size:28px;
-            font-weight:700;
-            animation:logoGlow 3s infinite alternate;
-        }
 
-        @keyframes logoGlow{
-            from{
-                text-shadow:0 0 10px rgba(255,255,255,0.4);
-            }
-            to{
-                text-shadow:0 0 20px rgba(255,159,67,0.9);
-            }
+            font-size:28px;
+
+            font-weight:700;
         }
 
         nav{
+
             display:flex;
+
             gap:35px;
         }
 
         nav a{
+
             text-decoration:none;
+
             color:white;
+
             font-weight:500;
-            position:relative;
-            transition:0.3s;
         }
-
-        nav a::after{
-            content:'';
-            position:absolute;
-            left:0;
-            bottom:-6px;
-            width:0%;
-            height:2px;
-            background:#ff9f43;
-            transition:0.4s;
-        }
-
-        nav a:hover::after{
-            width:100%;
-        }
-
-        nav a:hover{
-            color:#ff9f43;
-        }
-
-        /* HAMBURGER */
 
         .hamburger{
+
             display:none;
+
             flex-direction:column;
+
             gap:5px;
+
             cursor:pointer;
         }
 
         .hamburger span{
+
             width:28px;
             height:3px;
+
             background:white;
+
             border-radius:5px;
         }
 
-        /* MOBILE MENU */
-
         .mobile-menu{
+
             position:fixed;
+
             top:80px;
             right:-100%;
+
             width:250px;
+
             height:100vh;
+
             background:rgba(0,0,0,0.95);
+
             padding:30px;
+
             transition:0.4s;
+
             z-index:999;
         }
 
         .mobile-menu.active{
+
             right:0;
         }
 
         .mobile-menu a{
+
             display:block;
+
             margin-bottom:25px;
+
             color:white;
+
             text-decoration:none;
-            font-size:18px;
         }
 
-        /* HOME */
-
         .home-section{
+
             min-height:100vh;
+
             display:flex;
+
             justify-content:center;
+
             align-items:center;
+
             flex-direction:column;
+
             text-align:center;
+
             padding:140px 10% 80px;
         }
 
         .home-section h1{
+
             font-size:65px;
+
             margin-bottom:25px;
-            animation:fadeUp 1s ease;
         }
 
         .home-section p{
-            max-width:950px;
+
+            max-width:900px;
+
             line-height:2;
+
             font-size:18px;
-            color:#f3f3f3;
-            animation:fadeUp 1.5s ease;
         }
 
         .highlight{
+
             color:#ffb347;
+
             font-weight:700;
         }
 
-        /* MENU */
+        .menu-section,
+        .review-section{
 
-        .menu-section{
             padding:80px 5%;
         }
 
         .section-title{
+
             text-align:center;
+
             font-size:45px;
+
             margin-bottom:50px;
         }
 
-        .menu-slider{
+        .menu-slider,
+        .review-slider{
+
             display:flex;
+
             gap:25px;
+
             overflow-x:auto;
-            scroll-behavior:smooth;
+
             padding-bottom:20px;
         }
 
-        .menu-slider::-webkit-scrollbar{
-            height:8px;
-        }
+        .food-card,
+        .review-card{
 
-        .menu-slider::-webkit-scrollbar-thumb{
-            background:#ff4d29;
-            border-radius:20px;
-        }
-
-        .food-card{
             min-width:320px;
+
             background:rgba(255,255,255,0.12);
+
             backdrop-filter:blur(12px);
+
             border-radius:25px;
+
             overflow:hidden;
+
             transition:0.4s;
-            animation:floatCard 4s infinite ease-in-out;
         }
 
-        .food-card:nth-child(2){
-            animation-delay:1s;
-        }
+        .food-card:hover,
+        .review-card:hover{
 
-        .food-card:nth-child(3){
-            animation-delay:2s;
-        }
-
-        .food-card:nth-child(4){
-            animation-delay:3s;
-        }
-
-        @keyframes floatCard{
-            0%{transform:translateY(0px);}
-            50%{transform:translateY(-10px);}
-            100%{transform:translateY(0px);}
-        }
-
-        .food-card:hover{
-            transform:translateY(-10px) scale(1.03);
+            transform:translateY(-10px);
         }
 
         .food-card img{
+
             width:100%;
+
             height:220px;
+
             object-fit:cover;
         }
 
         .food-content{
+
             padding:22px;
         }
 
         .food-content h3{
+
             margin-bottom:12px;
+
             font-size:26px;
         }
 
         .food-content p{
+
             line-height:1.7;
-            color:#eee;
         }
 
         .order-btn{
+
             width:100%;
+
             margin-top:20px;
+
             padding:14px;
+
             border:none;
+
             border-radius:14px;
-            background:linear-gradient(135deg,#ff4d29,#ff7a18);
+
+            background:
+            linear-gradient(
+                135deg,
+                #ff4d29,
+                #ff7a18
+            );
+
             color:white;
+
             font-size:16px;
+
             font-weight:600;
+
             cursor:pointer;
-            transition:0.3s;
         }
-
-        .order-btn:hover{
-            transform:scale(1.05);
-        }
-
-        /* LOGIN */
 
         .login-section{
+
             width:100%;
+
             display:flex;
+
             justify-content:center;
+
             align-items:center;
+
             padding:100px 20px;
         }
 
         .login-popup{
+
             width:100%;
+
             max-width:430px;
+
             padding:40px;
+
             border-radius:30px;
+
             background:rgba(255,255,255,0.12);
+
             backdrop-filter:blur(18px);
+
             border:1px solid rgba(255,255,255,0.2);
-            box-shadow:0 10px 40px rgba(0,0,0,0.35);
-            animation:loginGlow 1s ease;
-            position:relative;
-            overflow:hidden;
         }
-
-        @keyframes loginGlow{
-            0%{
-                transform:scale(0.8);
-                opacity:0;
-            }
-
-            50%{
-                transform:scale(1.03);
-                box-shadow:0 0 40px rgba(255,77,41,0.7);
-            }
-
-            100%{
-                transform:scale(1);
-                opacity:1;
-            }
-        }
-
-        /* CHEF */
 
         .chef{
+
             text-align:center;
+
             font-size:75px;
-            animation:chefMove 3s infinite ease-in-out;
+
             margin-bottom:10px;
         }
 
-        @keyframes chefMove{
-            0%{transform:rotate(0deg);}
-            25%{transform:rotate(5deg);}
-            50%{transform:rotate(0deg);}
-            75%{transform:rotate(-5deg);}
-            100%{transform:rotate(0deg);}
-        }
-
-        /* STEAM */
-
-        .steam{
-            position:absolute;
-            top:15px;
-            left:50%;
-            transform:translateX(-50%);
-        }
-
-        .steam span{
-            position:absolute;
-            width:10px;
-            height:10px;
-            background:white;
-            border-radius:50%;
-            animation:steam 3s infinite;
-            opacity:0;
-        }
-
-        .steam span:nth-child(1){
-            left:-10px;
-            animation-delay:0s;
-        }
-
-        .steam span:nth-child(2){
-            left:10px;
-            animation-delay:1s;
-        }
-
-        .steam span:nth-child(3){
-            left:30px;
-            animation-delay:2s;
-        }
-
-        @keyframes steam{
-            0%{
-                transform:translateY(0) scale(1);
-                opacity:0;
-            }
-
-            50%{
-                opacity:1;
-            }
-
-            100%{
-                transform:translateY(-40px) scale(2);
-                opacity:0;
-            }
-        }
-
         .login-header{
+
             text-align:center;
+
             margin-bottom:25px;
         }
 
         .login-header h2{
+
             font-size:34px;
+
             margin-bottom:10px;
         }
 
-        .login-header p{
-            color:#eee;
+        .error-message{
+
+            background:#ff4d29;
+
+            padding:12px;
+
+            border-radius:12px;
+
+            margin-bottom:18px;
+
+            text-align:center;
         }
 
-        .error-message{
-            background:#ff4d29;
+        .success-message{
+
+            background:#28a745;
+
             padding:12px;
+
             border-radius:12px;
+
             margin-bottom:18px;
+
             text-align:center;
         }
 
         .input-group{
+
             margin-bottom:18px;
         }
 
         .input-group input{
-            width:100%;
-            padding:14px 16px;
-            border:none;
-            border-radius:14px;
-            outline:none;
-            background:rgba(255,255,255,0.92);
-            font-size:15px;
-            transition:0.3s;
-        }
 
-        .input-group input:focus{
-            transform:scale(1.02);
-            box-shadow:0 0 15px rgba(255,77,41,0.4);
+            width:100%;
+
+            padding:14px 16px;
+
+            border:none;
+
+            border-radius:14px;
+
+            outline:none;
+
+            background:white;
+
+            font-size:15px;
         }
 
         .login-btn{
+
             width:100%;
+
             padding:14px;
+
             border:none;
+
             border-radius:14px;
-            background:linear-gradient(135deg,#ff4d29,#ff7a18);
+
+            background:
+            linear-gradient(
+                135deg,
+                #ff4d29,
+                #ff7a18
+            );
+
             color:white;
+
             font-size:17px;
+
             font-weight:600;
+
             cursor:pointer;
-            transition:0.3s;
-            animation:pulse 2s infinite;
-        }
-
-        @keyframes pulse{
-            0%{
-                box-shadow:0 0 0 0 rgba(255,77,41,0.6);
-            }
-
-            70%{
-                box-shadow:0 0 0 15px rgba(255,77,41,0);
-            }
-
-            100%{
-                box-shadow:0 0 0 0 rgba(255,77,41,0);
-            }
-        }
-
-        .login-btn:hover{
-            transform:translateY(-2px);
         }
 
         .terms-container{
+
             display:flex;
+
             gap:10px;
+
             margin-top:18px;
+
             font-size:13px;
-            line-height:1.5;
         }
 
-        .terms-container input{
-            accent-color:#ff4d29;
-            margin-top:3px;
-        }
+        .extra-links{
 
-        /* REVIEWS */
+            margin-top:22px;
 
-        .review-section{
-            padding:80px 5%;
-        }
-
-        .review-slider{
             display:flex;
-            gap:25px;
-            overflow-x:auto;
-            padding-bottom:20px;
+
+            flex-direction:column;
+
+            gap:15px;
+        }
+
+        .register-btn,
+        .admin-btn{
+
+            border:none;
+
+            text-decoration:none;
+
+            text-align:center;
+
+            padding:14px;
+
+            border-radius:14px;
+
+            color:white;
+
+            font-weight:600;
+
+            cursor:pointer;
+        }
+
+        .register-btn{
+
+            background:
+            linear-gradient(
+                135deg,
+                #00b894,
+                #00cec9
+            );
+        }
+
+        .admin-btn{
+
+            background:
+            linear-gradient(
+                135deg,
+                #6c5ce7,
+                #a29bfe
+            );
         }
 
         .review-card{
-            min-width:320px;
-            background:rgba(255,255,255,0.12);
-            backdrop-filter:blur(10px);
-            border-radius:25px;
+
             padding:25px;
-            transition:0.4s;
-        }
-
-        .review-card:hover{
-            transform:translateY(-10px) scale(1.03);
-        }
-
-        .review-card h3{
-            margin-bottom:10px;
-            color:#ffb347;
-        }
-
-        .review-card p{
-            line-height:1.8;
-            color:#f1f1f1;
         }
 
         .stars{
+
             color:gold;
+
             font-size:22px;
+
             margin-bottom:10px;
         }
 
-        /* FOOTER */
-
         footer{
+
             padding:25px;
+
             text-align:center;
+
             background:rgba(0,0,0,0.45);
-            backdrop-filter:blur(10px);
         }
-
-        /* ANIMATION */
-
-        @keyframes fadeUp{
-            from{
-                transform:translateY(40px);
-                opacity:0;
-            }
-            to{
-                transform:translateY(0px);
-                opacity:1;
-            }
-        }
-
-        /* MOBILE */
 
         @media(max-width:768px){
 
@@ -578,20 +591,8 @@
                 display:flex;
             }
 
-            header{
-                padding:18px 20px;
-            }
-
-            .logo{
-                font-size:22px;
-            }
-
             .home-section h1{
                 font-size:42px;
-            }
-
-            .home-section p{
-                font-size:16px;
             }
 
             .section-title{
@@ -610,8 +611,6 @@
 
 <body>
 
-    <!-- HEADER -->
-
     <header>
 
         <div class="logo">
@@ -619,13 +618,19 @@
         </div>
 
         <nav>
+
             <a href="#home">Home</a>
+
             <a href="#menu">Menu</a>
+
             <a href="#reviews">Reviews</a>
+
             <a href="#login">Login</a>
+
         </nav>
 
-        <div class="hamburger" onclick="toggleMenu()">
+        <div class="hamburger"
+             onclick="toggleMenu()">
 
             <span></span>
             <span></span>
@@ -635,20 +640,21 @@
 
     </header>
 
-    <!-- MOBILE MENU -->
-
-    <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu"
+         id="mobileMenu">
 
         <a href="#home">Home</a>
+
         <a href="#menu">Menu</a>
+
         <a href="#reviews">Reviews</a>
+
         <a href="#login">Login</a>
 
     </div>
 
-    <!-- HOME -->
-
-    <section class="home-section" id="home">
+    <section class="home-section"
+             id="home">
 
         <h1>
             Respect Food 🍲
@@ -656,13 +662,15 @@
 
         <p>
 
-            Food is a blessing that gives us energy, happiness, and life.
-            Thousands of people sleep hungry every night, so we should always
-            <span class="highlight">respect food and never waste it.</span>
+            Food is a blessing that gives us energy,
+            happiness, and life.
 
-            Every meal served is prepared with hard work and love.
-            Let us value food, share food with others, and spread kindness
-            through every delicious meal we enjoy together.
+            Thousands of people sleep hungry every night,
+            so we should always
+
+            <span class="highlight">
+                respect food and never waste it.
+            </span>
 
         </p>
 
@@ -670,7 +678,8 @@
 
     <!-- MENU -->
 
-    <section class="menu-section" id="menu">
+    <section class="menu-section"
+             id="menu">
 
         <h2 class="section-title">
             Popular Foods 🍔
@@ -687,12 +696,14 @@
                     <h3>Cheese Burger</h3>
 
                     <p>
-                        Crispy burger loaded with cheese and fresh vegetables.
+                        Crispy burger loaded with cheese and vegetables.
                     </p>
 
                     <button class="order-btn"
                             onclick="scrollToLogin()">
+
                         Login to Order
+
                     </button>
 
                 </div>
@@ -713,7 +724,9 @@
 
                     <button class="order-btn"
                             onclick="scrollToLogin()">
+
                         Login to Order
+
                     </button>
 
                 </div>
@@ -734,7 +747,9 @@
 
                     <button class="order-btn"
                             onclick="scrollToLogin()">
+
                         Login to Order
+
                     </button>
 
                 </div>
@@ -755,7 +770,9 @@
 
                     <button class="order-btn"
                             onclick="scrollToLogin()">
+
                         Login to Order
+
                     </button>
 
                 </div>
@@ -768,79 +785,170 @@
 
     <!-- LOGIN -->
 
-    <section class="login-section" id="login">
+    <section class="login-section"
+             id="login">
 
         <div class="login-popup">
-
-            <div class="steam">
-
-                <span></span>
-                <span></span>
-                <span></span>
-
-            </div>
 
             <div class="chef">
                 👨‍🍳
             </div>
 
-            <div class="login-header">
+            <!-- LOGIN FORM -->
 
-                <h2>
-                    Welcome Back
-                </h2>
+            <div id="loginForm">
 
-                <p>
-                    Login to order your favorite food
-                </p>
+                <div class="login-header">
+
+                    <h2>
+                        Welcome Back
+                    </h2>
+
+                    <p>
+                        Login to order your favorite food
+                    </p>
+
+                </div>
+
+                {% if error %}
+
+                    <div class="error-message">
+                        {{ error }}
+                    </div>
+
+                {% endif %}
+
+                <form method="POST"
+                      action="/">
+
+                    <div class="input-group">
+
+                        <input type="text"
+                               name="username"
+                               placeholder="Enter Username"
+                               required>
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <input type="password"
+                               name="password"
+                               placeholder="Enter Password"
+                               required>
+
+                    </div>
+
+                    <button type="submit"
+                            class="login-btn">
+
+                        Student Login
+
+                    </button>
+
+                    <div class="terms-container">
+
+                        <input type="checkbox"
+                               required>
+
+                        <label>
+
+                            By continuing, I agree to
+                            the terms & privacy policy.
+
+                        </label>
+
+                    </div>
+
+                </form>
+
+                <div class="extra-links">
+
+                    <button onclick="showRegister()"
+                            class="register-btn">
+
+                        🆕 Create Student Account
+
+                    </button>
+
+                    <a href="/admin_login"
+                       class="admin-btn">
+
+                        🔐 Admin Login
+
+                    </a>
+
+                </div>
 
             </div>
 
-            {% if error %}
-                <div class="error-message">
-                    {{ error }}
-                </div>
-            {% endif %}
+            <!-- REGISTER FORM -->
 
-            <form method="POST">
+            <div id="registerForm"
+                 style="display:none;">
 
-                <div class="input-group">
+                <div class="login-header">
 
-                    <input type="text"
-                           name="username"
-                           placeholder="Username (e.g., student)"
-                           required>
+                    <h2>
+                        Create Account
+                    </h2>
 
-                </div>
-
-                <div class="input-group">
-
-                    <input type="password"
-                           name="password"
-                           placeholder="Password (e.g., campus123)"
-                           required>
+                    <p>
+                        Register your student account
+                    </p>
 
                 </div>
 
-                <button type="submit"
-                        class="login-btn">
-                    Login
-                </button>
+                {% if success %}
 
-                <div class="terms-container">
+                    <div class="success-message">
+                        {{ success }}
+                    </div>
 
-                    <input type="checkbox"
-                           id="terms"
-                           required>
+                {% endif %}
 
-                    <label for="terms">
-                        By continuing, I agree to the terms of use &
-                        privacy policy.
-                    </label>
+                <form method="POST"
+                      action="/register">
+
+                    <div class="input-group">
+
+                        <input type="text"
+                               name="username"
+                               placeholder="Create Username"
+                               required>
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <input type="password"
+                               name="password"
+                               placeholder="Create Password"
+                               required>
+
+                    </div>
+
+                    <button type="submit"
+                            class="login-btn">
+
+                        Register
+
+                    </button>
+
+                </form>
+
+                <div class="extra-links">
+
+                    <button onclick="showLogin()"
+                            class="register-btn">
+
+                        🔑 Already have account? Login
+
+                    </button>
 
                 </div>
 
-            </form>
+            </div>
 
         </div>
 
@@ -848,7 +956,8 @@
 
     <!-- REVIEWS -->
 
-    <section class="review-section" id="reviews">
+    <section class="review-section"
+             id="reviews">
 
         <h2 class="section-title">
             Student Reviews ⭐
@@ -858,65 +967,80 @@
 
             <div class="review-card">
 
-                <div class="stars">★★★★★</div>
+                <div class="stars">
+                    ★★★★★
+                </div>
 
-                <h3>Rahul - CSE Student</h3>
+                <h3>
+                    Rahul - CSE Student
+                </h3>
 
                 <p>
                     Amazing food quality and super fast service.
-                    Burger and biryani are my favorites.
                 </p>
 
             </div>
 
             <div class="review-card">
 
-                <div class="stars">★★★★★</div>
+                <div class="stars">
+                    ★★★★★
+                </div>
 
-                <h3>Ananya - MBA Student</h3>
+                <h3>
+                    Ananya - MBA Student
+                </h3>
 
                 <p>
                     Fresh food and beautiful ordering system.
-                    Everything tastes delicious.
                 </p>
 
             </div>
 
             <div class="review-card">
 
-                <div class="stars">★★★★★</div>
+                <div class="stars">
+                    ★★★★★
+                </div>
 
-                <h3>Vikram - Engineering Student</h3>
+                <h3>
+                    Vikram - Engineering Student
+                </h3>
 
                 <p>
                     Pizza and coffee combo is incredible.
-                    Affordable prices for all students.
                 </p>
 
             </div>
 
             <div class="review-card">
 
-                <div class="stars">★★★★★</div>
+                <div class="stars">
+                    ★★★★★
+                </div>
 
-                <h3>Sneha - Medical Student</h3>
+                <h3>
+                    Sneha - Medical Student
+                </h3>
 
                 <p>
                     Hygienic food and excellent staff behavior.
-                    Highly recommended for students.
                 </p>
 
             </div>
 
             <div class="review-card">
 
-                <div class="stars">★★★★★</div>
+                <div class="stars">
+                    ★★★★★
+                </div>
 
-                <h3>Arjun - IT Student</h3>
+                <h3>
+                    Arjun - IT Student
+                </h3>
 
                 <p>
-                    Smooth login experience and quick food preparation.
-                    Best canteen website in our campus.
+                    Smooth login experience and quick preparation.
                 </p>
 
             </div>
@@ -925,21 +1049,16 @@
 
     </section>
 
-    <!-- FOOTER -->
-
     <footer>
 
         <p>
-            © 2026 Campus Canteen | Fresh Food • Fast Service • Happy Students
+            © 2026 Campus Canteen |
+            Fresh Food • Fast Service • Happy Students
         </p>
 
     </footer>
 
-    <!-- SCRIPT -->
-
     <script>
-
-        // MOBILE MENU
 
         function toggleMenu(){
 
@@ -950,124 +1069,39 @@
 
         }
 
-        // LOGIN SCROLL
-
         function scrollToLogin(){
 
-            const loginSection =
-                document.getElementById('login');
+            document
+            .getElementById('login')
+            .scrollIntoView({
 
-            loginSection.scrollIntoView({
                 behavior:'smooth'
+
             });
-
-            const popup =
-                document.querySelector('.login-popup');
-
-            popup.style.animation = 'none';
-
-            setTimeout(() => {
-
-                popup.style.animation =
-                    'loginGlow 1s ease';
-
-            },50);
 
         }
 
-        // HEADER LOGIN CLICK
+        function showRegister(){
 
-        document.querySelectorAll('a[href="#login"]')
-        .forEach(link => {
+            document
+            .getElementById('loginForm')
+            .style.display = 'none';
 
-            link.addEventListener('click', function(e){
+            document
+            .getElementById('registerForm')
+            .style.display = 'block';
+        }
 
-                e.preventDefault();
+        function showLogin(){
 
-                scrollToLogin();
+            document
+            .getElementById('registerForm')
+            .style.display = 'none';
 
-            });
-
-        });
-
-        // AUTO SLIDE MENU
-
-        const menuSlider =
-            document.querySelector('.menu-slider');
-
-        let menuScroll = 0;
-
-        setInterval(() => {
-
-            menuScroll += 340;
-
-            if(menuScroll >= menuSlider.scrollWidth){
-
-                menuScroll = 0;
-
-            }
-
-            menuSlider.scrollTo({
-
-                left:menuScroll,
-                behavior:'smooth'
-
-            });
-
-        },3000);
-
-        // AUTO SLIDE REVIEWS
-
-        const reviewSlider =
-            document.querySelector('.review-slider');
-
-        let reviewScroll = 0;
-
-        setInterval(() => {
-
-            reviewScroll += 340;
-
-            if(reviewScroll >= reviewSlider.scrollWidth){
-
-                reviewScroll = 0;
-
-            }
-
-            reviewSlider.scrollTo({
-
-                left:reviewScroll,
-                behavior:'smooth'
-
-            });
-
-        },4000);
-
-        // HEADER EFFECT
-
-        window.addEventListener('scroll', () => {
-
-            const header =
-                document.querySelector('header');
-
-            if(window.scrollY > 50){
-
-                header.style.background =
-                    'rgba(0,0,0,0.75)';
-
-                header.style.boxShadow =
-                    '0 5px 20px rgba(0,0,0,0.4)';
-
-            }
-            else{
-
-                header.style.background =
-                    'rgba(0,0,0,0.35)';
-
-                header.style.boxShadow = 'none';
-
-            }
-
-        });
+            document
+            .getElementById('loginForm')
+            .style.display = 'block';
+        }
 
     </script>
 
